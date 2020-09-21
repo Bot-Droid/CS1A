@@ -1,0 +1,44 @@
+from random import choice
+from random import randint
+
+directions = ["north", "south", "east", "west", "look Around"]
+inventory = []
+
+print("Dungeon Mania")
+
+def move(direction):
+  if(answer == "n"):
+    print("Moving north...")
+  elif(answer == "s"):
+    print("Moving south...")
+  if(answer == "e"):
+    print("Moving east...")
+  if(answer == "w"):
+    print("Moving west...")
+
+def lookAround():
+  things = ["nothing", "a treasure chest", "a staff", "a glowing orb"]
+  item = choice(things)
+  print("You found", item)
+  answer = input("Do you want to add this item to your inventory? (y / n) >>")
+  if(answer == "y"):
+    addItem(item)
+  print(inventory)
+
+def addItem(item):
+  inventory.append(item)
+
+def dropItem():
+  if(randint(0, 10) == 1):
+    print("You dropped all your items!")
+    inventory.clear()
+
+keepGoing = True
+while(keepGoing):
+  answer = input("Choose a direction: (n, s, e, w, l) >> ")
+  if(answer == "l"):
+    lookAround()
+  else:
+    keepGoing = move(answer)
+    dropItem()
+    print(:)
