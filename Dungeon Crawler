@@ -1,0 +1,61 @@
+from random import choice
+from random import randint
+
+directions = ["north", "south", "east", "west", "look Around"]
+inventory = []
+
+print("Dungeon Runner")  
+
+def move(direction):
+  if(answer == "n"):
+    print("Moving north...")
+  elif(answer == "s"):
+    print("Moving south...")
+  if(answer == "e"):
+    print("Moving east...")
+  if(answer == "w"):
+    print("Moving west...")
+
+def lookAround():
+  things = ["nothing", "a treasure chest", "a staff", "a glowing orb", "shoes", "Sword"]
+  item = choice(things)
+  if item == ("nothing"):
+    print("You Found Nothing.")
+  else:
+    print("You found", item)
+    answer = input("Do you want to add this item to your inventory? (y / n) >>")
+    if(answer == "y"):
+      addItem(item)
+    print(inventory)
+
+import random
+def chanceperc():
+  chance = random.randint(0,100)
+  if(chance > 0 and chance < 5):
+      inventory.append("sword")
+  if(chance > 5 and chance < 10):
+      inventory.append("staff")
+  if(chance > 11 and chance < 12):
+      inventory.append("treasure chest")
+  if(chance > 13 and chance < 20):
+      inventory.append("shoes")
+  if(chance > 21 and chance < 30):
+      inventory.append("glowing orb")
+  if(chance > 31 and chance < 100):
+      inventory.append("nothing")
+
+def addItem(item):
+  inventory.append(item)
+
+def dropItem():
+  if(randint(0, 10) == 1):
+    print("You dropped all your items!")
+    inventory.clear()
+
+keepGoing = True
+while(keepGoing):
+  answer = input("Choose a direction: (n, s, e, w, l) >> ")
+  if(answer == "l"):
+    lookAround()
+  else:
+    dropItem()
