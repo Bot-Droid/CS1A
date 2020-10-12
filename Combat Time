@@ -1,0 +1,51 @@
+import random
+
+item = input("Choose an Item: A:Sword B:Book C:Staff")
+
+def attacks():
+  player_health = 15
+  enemy_health = 12
+  while(True):
+    print("Player Health: ", player_health)
+    print("Enemy Health: ", enemy_health)
+    attack = input("Choose Your Attack: 1=Fireball 2=Cut 3=Kick 4=Whirlwind")
+    if(attack == "1"):
+      if(item == 'B'):
+          enemy_health = enemy_health - 7
+          print(enemy_health -7)
+      else:
+        enemy_health = enemy_health - 6
+        print(enemy_health -6)
+    elif(attack == "2"):
+      if(item == 'A'):
+          enemy_health = enemy_health - 6
+          print(enemy_health -6)
+      else:
+        enemy_health = enemy_health - 4
+        print(enemy_health -4)
+    if(attack == "3"):
+      enemy_health = enemy_health - 3
+      print(enemy_health -3)
+    if(attack == "4"):
+      if(item == 'C'):
+          enemy_health = enemy_health - 7
+          print(enemy_health -7)
+      else:
+        enemy_health = enemy_health - 5
+        print(enemy_health -5)
+    enemy_throw = random.randrange(0, 4)
+    if enemy_throw == 0:
+      player_health = player_health - 1
+    elif enemy_throw == 1:
+      player_health = player_health - 2
+    elif enemy_throw == 2:
+      player_health = player_health - 3
+    elif enemy_throw == 3:
+      player_health = player_health - 4
+    if enemy_health <= 0:
+      print ("You win.")
+      break
+    if player_health <= 0:
+      print ("You lose.")
+      break
+attacks()
