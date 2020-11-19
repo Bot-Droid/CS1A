@@ -1,0 +1,118 @@
+import pygame
+import random
+import os
+
+WIDTH = 420
+HEIGHT = 360 #noscope
+FPS = 30
+GROUND = HEIGHT - 30
+SLOW = 3
+FAST = 8
+
+PLAYER_ACC = 0.9
+PLAYER_FRICTION = -0.12
+PLAYER_GRAV = 0.9
+vec = pygame.math.Vector2
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+ALEXYELLOW = (235, 194, 12)
+
+game_folder = os.path.dirname(__file__)
+img_folder = os.path.join(game_folder, "img")
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(img_folder, "sprite_0.png")).convert()
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.pos = vec(10, GROUND - 60)
+        self.vel = vec(0, 0)
+        self.acc = vec(0, 0)
+        self.rect.center = (WIDTH / 2, HEIGHT / 2)
+        self.y_speed = 5
+    def update(self):
+        self.acc = vec(0, PLAYER_GRAV)
+        keystate = pygame.key.get_pressed()
+        if keystate[pygame.K_RIGHT]:
+            self.rect.x += 5
+        if keystate[pygame.K_LEFT]:
+            self.rect.x += -5
+        if keystate[pygame.K_SPACE]:
+            self.shoot()
+
+        self.rect.x += self.speedx
+        
+        if keystate[pygame.K_UP]:
+            self.rect.y += -5
+        if self.vel.y == 0 and keystate[pygame.K_SPACE]:
+            self.vel.y = -20
+        self.acc.x += self.vel.x * PLAYER_FRICTION
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+        if self.pos.y > WIDTH:
+            self.pos.y = 0
+        if self.pos.x < 0:
+            self.pos.x = WIDTH
+        if self.pos.y > GROUND:
+            self.pos.y = GROUND + 1
+            self.vel.y = 0
+        self.rect.midbottom = self.pos
+
+class Platform(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((100,25))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
+        self.rect.x = 10
+        self.rect.y = HEIGHT - 80
+        self.rect.center = (WIDTH / 2, HEIGHT / 2)
+    def update(self):
+        self.rect.x += -5
+        if self.rect.right < 0:
+            self.rect.left = WIDTH
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.transform.scale("Bullet.png", (50, 38))
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.radius = 20
+        self.rect.centerx = WIDTH / 2
+        self.rect.bottom = HEIGHT - 10
+        self.speedx = 5
+        self.shield = 100
+        self.shoot_delay = 250
+        self.last_shot = pygame.time.get_ticks()
+
+pygame.init()
+pygame.mixer.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("My Game")
+
+clock = pygame.time.Clock()
+
+all_sprites = pygame.sprite.Group()
+player = Player()
+all_sprites.add(player)
+
+platform = Platform()
+all_sprites.add(platform)
+
+running = True
+while running:
+    clock.tick(FPS)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    all_sprites.update()
+    screen.fill(BLACK)
+    all_sprites.draw(screen)
+    pygame.display.flip()
+pygame.quit()
