@@ -1,0 +1,21 @@
+print ("*****MAD LABS*****")
+print ("Enter a word or phrase for each prompt below:")
+title       = input ("Title >> ").upper()
+date        = input ("Date >> ").upper()
+person      = input ("Person >> ").upper()
+dad         = input ("Dad >> ").upper()
+
+
+place       = input ("Place >> ").upper()
+
+enemy       = input ("Enemy >> ").upper()
+
+weapon      = input ("Weapon >> ").upper()
+
+country     = input ("Country >> ").upper()
+
+
+print (title)
+print ("It was the night of" + date)
+print (person + "gave me the news that my father, " + dad + ", had been killed by" + enemy + ".")
+
